@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-python3 /usr/share/arcolinux-welcome-app/arcolinux-welcome-app.py
+python3 /usr/share/arcolinux-welcome-app/arcolinux-welcome-app-it.py
