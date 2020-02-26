@@ -122,7 +122,7 @@ class Main(Gtk.Window):
                                    buttons=Gtk.ButtonsType.YES_NO,
                                    text="Not Found!")
             md.format_secondary_markup(
-                "<b>ArcoLinux Tweak Tool</b> was not found on your system\n\
+                "<b>ArcoLinux Tweak Tool</b> non nel sistema\n\
 Do you want to install it?")
 
             result = md.run()
