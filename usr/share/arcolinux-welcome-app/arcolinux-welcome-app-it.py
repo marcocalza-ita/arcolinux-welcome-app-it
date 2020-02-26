@@ -26,8 +26,8 @@ class Main(Gtk.Window):
             GUI.base_dir, 'images/arcolinux.png'))
         self.set_position(Gtk.WindowPosition.CENTER)
         self.results = ""
-        if not os.path.exists(GUI.home + "/.config/arcolinux-welcome-app/"):
-            os.mkdir(GUI.home + "/.config/arcolinux-welcome-app/")
+        if not os.path.exists(GUI.home + "/.config/arcolinux-welcome-app-it/"):
+            os.mkdir(GUI.home + "/.config/arcolinux-welcome-app-it/")
             with open(GUI.Settings, "w") as f:
                 f.write("autostart=True")
                 f.close()
