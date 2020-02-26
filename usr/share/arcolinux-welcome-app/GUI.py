@@ -46,7 +46,7 @@ def GUI(self, Gtk, GdkPixbuf):
 
     label = Gtk.Label(xalign=0)
     label.set_markup(
-        "<big>Welcome to <b>ArcoLinux</b></big>")
+        "<big>Benvenuti <b>in ArcoLinux</b></big>")
     label.set_line_wrap(True)
 
     # pixbuf = GdkPixbuf.Pixbuf().new_from_file_at_size(
@@ -85,13 +85,13 @@ def GUI(self, Gtk, GdkPixbuf):
 
     button1 = Gtk.Button(label="")
     button1_label = button1.get_child()
-    button1_label.set_markup("<span size='large'><b>Run GParted</b></span>")
+    button1_label.set_markup("<span size='large'><b>Avvia GParted</b></span>")
     button1.connect("clicked", self.on_gp_clicked)
     button1.set_size_request(0, 100)
 
     button2 = Gtk.Button(label="")
     button2_label = button2.get_child()
-    button2_label.set_markup("<span size='large'><b>Run Calamares</b></span>")
+    button2_label.set_markup("<span size='large'><b>Avvia Calamares</b></span>")
 
     button2.connect("clicked", self.on_ai_clicked)
     button2.set_size_request(0, 100)
