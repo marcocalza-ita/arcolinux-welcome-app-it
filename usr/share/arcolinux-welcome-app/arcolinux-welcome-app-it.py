@@ -19,7 +19,7 @@ REMOTE_SERVER = "www.google.com"
 
 class Main(Gtk.Window):
     def __init__(self):
-        super(Main, self).__init__(title="ArcoLinux Benvenuto ")
+        super(Main, self).__init__(title="ArcoLinux Applicazione di Benvenuto ")
         self.set_border_width(10)
         self.set_default_size(750, 250)
         self.set_icon_from_file(os.path.join(
