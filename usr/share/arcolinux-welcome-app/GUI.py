@@ -60,14 +60,14 @@ def GUI(self, Gtk, GdkPixbuf):
     if username == user:
 
         label2.set_markup(
-            "We advise to clean the computer with Gparted before installing. During the Calamares installation many options will be open to you. You have the freedom of choice. " +  # noqa
-            "The links below will get you started on ArcoLinux. We communicate with our community via a diversity of social media. Do join us to learn the latest news, ask questions or for casual talk. \n\n" +  # noqa
-            "We appreciate your feed-back and donation.  \nLearn, have fun and enjoy. \n\n" +  # noqa
-            "The ArcoLinux Team")
+            "Si consiglia di pulire il computer con Gparted prima dell'installazione. Durante l'installazione di Calamares ti saranno aperte molte opzioni. Hai la libertà di scelta. " +  # noqa
+            "I link sottostanti ti faranno iniziare su ArcoLinux. Comunichiamo con la nostra comunità attraverso una varietà di social media. Unisciti a noi per conoscere le ultime notizie, porre domande o parlare in modo informale. \n\n" +  # noqa
+            "Apprezziamo il tuo feedback e la tua donazione.  \nImpara, divertiti e divertiti. \n\n" +  # noqa
+            "Il Team di  ArcoLinux ")
     else:
-        label2.set_markup("The links below will get you started on ArcoLinux. We communicate with our community via a diversity of social media. Do join us to learn the latest news, ask questions or for casual talk. \n\n" +  # noqa
-                          "We appreciate your feed-back and donation.  \nLearn, have fun and enjoy. \n\n" +  # noqa
-                          "The ArcoLinux Team")
+        label2.set_markup("I link sottostanti ti faranno iniziare su ArcoLinux. Comunichiamo con la nostra comunità attraverso una varietà di social media. Unisciti a noi per conoscere le ultime notizie, porre domande o parlare in modo informale. \n\n" +  # noqa
+                          "Apprezziamo il tuo feedback e la tua donazione.  \nImpara, divertiti e divertiti. \n\n" +  # noqa
+                          "Il Team di  ArcoLinux")
     # label2.connect( "size-allocate", self.cb_allocate )
     # vbox1.pack_start(image, False, False, 0)
     # vbox2.pack_start(label, False, False, 0)
@@ -144,15 +144,15 @@ def GUI(self, Gtk, GdkPixbuf):
     # ======================================================================
     #                   FOOTER BUTTON LINKS
     # ======================================================================
-    button3 = Gtk.Button(label="Release info")
+    button3 = Gtk.Button(label="Info Versione")
     button3.connect("clicked", self.on_link_clicked,
                     "https://arcolinux.info/category/2020/")
 
-    button4 = Gtk.Button(label="Choose your project")
+    button4 = Gtk.Button(label="Scegli il tuo progetto")
     button4.connect("clicked", self.on_link_clicked,
                     "https://arcolinux.info/choose-your-project/")
 
-    button5 = Gtk.Button(label="Core info")
+    button5 = Gtk.Button(label="Info di base")
     button5.connect("clicked", self.on_link_clicked,
                     "https://arcolinux.info/arcolinux-editions/")
 
@@ -172,11 +172,11 @@ def GUI(self, Gtk, GdkPixbuf):
 
     button8 = Gtk.Button(label="")
     button8_label = button8.get_child()
-    button8_label.set_markup("<b>Donate</b>")
+    button8_label.set_markup("<b>Donazione</b>")
     button8.connect("clicked", self.on_link_clicked,
                     "https://arcolinux.info/donation/")
 
-    button9 = Gtk.Button(label="Get Involved")
+    button9 = Gtk.Button(label="Beta Tester")
     button9.connect("clicked", self.on_link_clicked,
                     "https://arcolinux.info/looking-for-betatesters/")
 
@@ -317,7 +317,7 @@ def GUI(self, Gtk, GdkPixbuf):
     launchBox.set_property("has-tooltip", True)
     launchBox.connect("query-tooltip",
                       self.tooltip_callback,
-                      "Run Arcolinux Tweak Tool")
+                      "Avvia Arcolinux Tweak Tool")
 
     hbox6.pack_start(launchBox, False, False, 0)
 
