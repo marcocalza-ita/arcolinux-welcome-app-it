@@ -2,7 +2,8 @@
 # =                  Author: Brad Heffernan                       =
 # =================================================================
 # =================================================================
-# =                  Modifica marcocalza                      =
+# =                  Modifica marcocalza  
+#                      traduzione ita                             =
 # =================================================================
 
 import os
@@ -197,7 +198,7 @@ def GUI(self, Gtk, GdkPixbuf):
     #                   Add to startup
     # ======================================================================
 
-    check = Gtk.CheckButton(label="Start on Startup")
+    check = Gtk.CheckButton(label="Esegui all'avvio")
     check.connect("toggled", self.statup_toggle)
     check.set_active(autostart)
     hbox3.pack_end(check, False, False, 0)
