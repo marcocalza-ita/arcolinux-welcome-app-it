@@ -8,7 +8,7 @@
 # Website	:	https://www.arcolinuxd.com
 # Website	:	https://www.arcolinuxforum.com
 ###############################################
-# Modificato:   marcocalza
+# Modificato:   marcocalza-ita
 ###############################################
 
 # controllando se ho gli ultimi file da github
