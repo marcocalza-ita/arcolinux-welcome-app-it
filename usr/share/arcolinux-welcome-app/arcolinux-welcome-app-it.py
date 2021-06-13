@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 # =================================================================
-# =                  Author: Brad Heffernan                       =
+# =          Authors: Brad Heffernan & Erik Dubois                =
 # =================================================================
 import gi
 import os
 import GUI
+import conflicts
+# import wnck
 import subprocess
 import threading
 import webbrowser
@@ -12,7 +14,8 @@ import shutil
 import socket
 from time import sleep
 gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk, GdkPixbuf, GLib  # noqa
+gi.require_version('Wnck', '3.0')
+from gi.repository import Gtk, GdkPixbuf, GLib, Wnck  # noqa
 
 REMOTE_SERVER = "www.google.com"
 
@@ -39,11 +42,22 @@ class Main(Gtk.Window):
             t.daemon = True
             t.start()
 
-    def on_ai_clicked(self, widget):
-        t = threading.Thread(target=self.run_app,
-                             args=(["pkexec", "/usr/bin/calamares"],))
+    def on_mirror_clicked(self, widget):
+        t = threading.Thread(target=self.mirror_update)
         t.daemon = True
         t.start()
+
+    def on_arcolinux_calamares_tool_clicked(self, widget):
+        t = threading.Thread(target=self.run_app,
+                             args=(["/usr/local/bin/arcolinux-calamares-tool"],))
+        t.daemon = True
+        t.start()
+
+    def on_update_clicked(self, widget):
+        print("Clicked")
+
+    def on_ai_clicked(self, widget):
+    	subprocess.Popen(["/usr/bin/calamares_polkit", "-d"], shell=False)
 
     def on_gp_clicked(self, widget):
         t = threading.Thread(target=self.run_app,
@@ -92,6 +106,16 @@ class Main(Gtk.Window):
         t.daemon = True
         t.start()
 
+    def on_info_clicked(self, widget, event):
+        window_list = Wnck.Screen.get_default().get_windows()
+        state = False
+        for win in window_list:
+            if "Information" in win.get_name():
+                state = True
+        if not state:
+            w = conflicts.Conflicts()
+            w.show_all()
+
     def weblink(self, link):
         webbrowser.open_new_tab(link)
 
@@ -135,12 +159,75 @@ Do you want to install it?")
                 t1.start()
 
     def internet_notifier(self):
+        bb = 0
+        dis = 0
         while(True):
             if not self.is_connected():
+                dis = 1
+                GLib.idle_add(self.button8.set_sensitive, False)
                 GLib.idle_add(self.cc.set_markup, "<span foreground='orange'><b><i>Not connected to internet</i></b> \nCalamares will <b>not</b> install additional software</span>")  # noqa
             else:
-                GLib.idle_add(self.cc.set_text, "")
+                if bb == 0 and dis == 1:
+                    GLib.idle_add(self.button8.set_sensitive, True)
+                    GLib.idle_add(self.cc.set_text, "")
+                    bb = 1
             sleep(3)
+
+    # def mirror_reload(self):
+    #     md = Gtk.MessageDialog(parent=self,
+    #                            flags=0,
+    #                            message_type=Gtk.MessageType.INFO,
+    #                            buttons=Gtk.ButtonsType.YES_NO,
+    #                            text="You are now connected")
+    #     md.format_secondary_markup("Would you like to update the <b>Arch Linux</b> mirrorlist?")
+    #     response = md.run()
+
+    #     if response == Gtk.ResponseType.YES:
+    #         GLib.idle_add(self.cc.set_markup, "<span foreground='orange'><b><i>Updating your mirrorlist</i></b> \nThis may take some time, please wait...</span>")  # noqa
+    #         t = threading.Thread(target=self.mirror_update)
+    #         t.daemon = True
+    #         t.start()
+    #     md.destroy()
+
+    def mirror_update(self):
+        GLib.idle_add(self.cc.set_markup, "<span foreground='orange'><b><i>Updating your mirrorlist</i></b> \nThis may take some time, please wait...</span>")  # noqa
+        GLib.idle_add(self.button8.set_sensitive, False)
+        subprocess.run(["pkexec", "/usr/bin/reflector", "--age", "6", "--latest", "21", "--fastest", "21", "--threads", "21", "--sort", "rate", "--protocol", "https", "--save", "/etc/pacman.d/mirrorlist"], shell=False)
+        print("FINISHED!!!")
+        GLib.idle_add(self.cc.set_markup, "<b>DONE</b>")
+        GLib.idle_add(self.button8.set_sensitive, True)
+
+    def btrfs_update(self):
+        if GUI.DEBUG:
+            path = "/home/bheffernan/Repos/GITS/XFCE/hefftor-calamares-oem-config/calamares/modules/partition.conf"
+        else:
+            path = "/etc/calamares/modules/partition.conf"
+
+        with open(path, "r") as f:
+            lines = f.readlines()
+            f.close()
+        data = [x for x in lines if "defaultFileSystemType" in x]
+        pos = lines.index(data[0])
+
+        lines[pos] = "defaultFileSystemType:  \"ext4\"\n"
+
+        with open(path, "w") as f:
+            f.writelines(lines)
+            f.close()
+
+        GLib.idle_add(self.MessageBox,"Success", "Your filesystem has been changed.")
+
+    # def finished_mirrors(self):
+    #     md = Gtk.MessageDialog(parent=self,
+    #                            flags=0,
+    #                            message_type=Gtk.MessageType.INFO,
+    #                            buttons=Gtk.ButtonsType.OK,
+    #                            text="Finished")
+    #     md.format_secondary_markup("Mirrorlist has been updated!")
+    #     md.run()
+    #     md.destroy()
+    #     GLib.idle_add(self.cc.set_markup, "")
+    #     GLib.idle_add(self.button8.set_sensitive, True)
 
     def MessageBox(self, title, message):
         md = Gtk.MessageDialog(parent=self,
@@ -151,6 +238,7 @@ Do you want to install it?")
         md.format_secondary_markup(message)
         md.run()
         md.destroy()
+
 
     def installATT(self):
         subprocess.call(["pkexec",
