@@ -1,19 +1,20 @@
 # =================================================================
-# =                  Author: Brad Heffernan                       =
-# =================================================================
-# =================================================================
-# =                  Modifica marcocalza  
-#                      traduzione ita                             =
+# =          Authors: Brad Heffernan & Erik Dubois                =
 # =================================================================
 
 import os
 import getpass
 from os.path import expanduser
 
+DEBUG = False
 base_dir = os.path.dirname(os.path.realpath(__file__))
 home = expanduser("~")
 username = getpass.getuser()
-user = "liveuser"
+
+if DEBUG:
+    user = username
+else:
+    user = "liveuser"
 
 Settings = home + "/.config/arcolinux-welcome-app/settings.conf"
 Skel_Settings = "/etc/skel/.config/arcolinux-welcome-app/settings.conf"
@@ -35,10 +36,20 @@ def GUI(self, Gtk, GdkPixbuf):
     hbox5 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
     hbox6 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
     hbox7 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
-    # hbox8 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+    hbox8 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
 
     # vbox1 = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
     # vbox2 = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
+
+    infoE = Gtk.EventBox()
+    pbinfo = GdkPixbuf.Pixbuf().new_from_file_at_size(
+        os.path.join(base_dir, 'images/question.png'), 38, 38)
+    infoimage = Gtk.Image().new_from_pixbuf(pbinfo)
+    infoE.add(infoimage)
+    infoE.connect("button_press_event", self.on_info_clicked)
+    infoE.set_property("has-tooltip", True)
+    infoE.connect("query-tooltip", self.tooltip_callback, "Conflicts Info")
+
     # ======================================================================
     #                   WELCOME LABEL
     # ======================================================================
@@ -78,8 +89,6 @@ def GUI(self, Gtk, GdkPixbuf):
     # hbox4.set_homogeneous(False)
     hbox4.pack_start(label2, False, False, 0)
 
-    grid = Gtk.Grid()
-
     # ======================================================================
     #                   MAIN BUTTONS
     # ======================================================================
@@ -97,10 +106,30 @@ def GUI(self, Gtk, GdkPixbuf):
     button2.connect("clicked", self.on_ai_clicked)
     button2.set_size_request(0, 100)
 
+    self.button8 = Gtk.Button(label="")
+    button8_label = self.button8.get_child()
+    button8_label.set_markup("<span size='large'><b>Update Arch Linux mirrors</b></span>")
+    self.button8.connect("clicked", self.on_mirror_clicked)
+    self.button8.set_size_request(210, 70)
+
+    button13 = Gtk.Button(label="")
+    button13_label = button13.get_child()
+    button13_label.set_markup("<span size='large'><b>ArcoLinux Calamares Tool</b></span>")
+    button13.connect("clicked", self.on_arcolinux_calamares_tool_clicked)
+    button13.set_size_request(210, 70)
+
     # grid.add(button1)
-    grid.attach(button1, 0, 0, 1, 2)
-    grid.attach(button2, 1, 0, 1, 2)
-    grid.set_column_homogeneous(True)
+    if username == user:
+        grid = Gtk.Grid()
+        grid.attach(self.button8, 0, 0, 2, 2)
+        grid.attach(button13, 2, 0, 2, 2)
+        grid.attach(button1, 0, 2, 2, 2)
+        grid.attach(button2, 2, 2, 2, 2)
+        grid.set_column_homogeneous(True)
+    else:
+        grid = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+        self.button8.set_size_request(420, 70)
+        grid.pack_start(self.button8, True, False, 0)
     # grid.set_row_homogeneous(True)
 
     # ======================================================================
@@ -189,10 +218,19 @@ def GUI(self, Gtk, GdkPixbuf):
     button11.connect("clicked", self.on_link_clicked,
                      "https://www.youtube.com/erikdubois")
 
+    button12 = Gtk.Button(label="Quit")
+    button12.set_size_request(200, 50)
+    button12.connect("clicked", Gtk.main_quit)
+    #button12.set_tooltip_markup("Quit the ArcoLinux Welcome App")
+
     hbox5.pack_start(button8, True, True, 0)
     hbox5.pack_start(button9, True, True, 0)
     hbox5.pack_start(button10, True, True, 0)
     hbox5.pack_start(button11, True, True, 0)
+    hbox5.pack_start(button12, True, True, 0)
+
+
+    # hbox8.pack_start(self.button8, True, False, 0)
 
     # ======================================================================
     #                   Add to startup
