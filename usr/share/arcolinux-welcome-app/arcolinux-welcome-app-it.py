@@ -190,11 +190,11 @@ Do you want to install it?")
     #     md.destroy()
 
     def mirror_update(self):
-        GLib.idle_add(self.cc.set_markup, "<span foreground='orange'><b><i>Updating your mirrorlist</i></b> \nThis may take some time, please wait...</span>")  # noqa
+        GLib.idle_add(self.cc.set_markup, "<span foreground='orange'><b><i>Aggiornamento dei mirrorlist</i></b> \nPotrebbe volerci un pò di tempo, per favore attendi...</span>")  # noqa
         GLib.idle_add(self.button8.set_sensitive, False)
         subprocess.run(["pkexec", "/usr/bin/reflector", "--age", "6", "--latest", "21", "--fastest", "21", "--threads", "21", "--sort", "rate", "--protocol", "https", "--save", "/etc/pacman.d/mirrorlist"], shell=False)
         print("FINISHED!!!")
-        GLib.idle_add(self.cc.set_markup, "<b>DONE</b>")
+        GLib.idle_add(self.cc.set_markup, "<b>Fatto</b>")
         GLib.idle_add(self.button8.set_sensitive, True)
 
     def btrfs_update(self):
