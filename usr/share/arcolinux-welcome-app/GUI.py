@@ -108,7 +108,7 @@ def GUI(self, Gtk, GdkPixbuf):
 
     self.button8 = Gtk.Button(label="")
     button8_label = self.button8.get_child()
-    button8_label.set_markup("<span size='large'><b>Update Arch Linux mirrors</b></span>")
+    button8_label.set_markup("<span size='large'><b>Aggiorna Arch Linux mirrors</b></span>")
     self.button8.connect("clicked", self.on_mirror_clicked)
     self.button8.set_size_request(210, 70)
 
